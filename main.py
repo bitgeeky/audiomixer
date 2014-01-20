@@ -10,9 +10,13 @@ class WaveOptions(Frame):
     def __init__(self, parent):
         
         # Object Vriables
+        self.name = None
         self.ampval = DoubleVar()
         self.tshiftval = DoubleVar()
         self.trevval = DoubleVar()
+        self.isrev = IntVar() 
+        self.ismodul = IntVar() 
+        self.ismix = IntVar() 
         
         # Initialize Frame
         Frame.__init__(self, parent)   
@@ -48,21 +52,21 @@ class WaveOptions(Frame):
 
 	# Time Reversal Check Button
         CheckVar1 = IntVar()
-        C1 = Checkbutton(self.parent, text = "Time Reversal", variable = CheckVar1, \
+        C1 = Checkbutton(self.parent, text = "Time Reversal", variable = self.isrev, \
                  onvalue = 1, offvalue = 0, height=2, \
                  width = 20)
         C1.pack()
        
         # Modulation Button
         CheckVar2 = IntVar()
-        C2 = Checkbutton(self.parent, text = "Select for Modulation", variable = CheckVar2, \
+        C2 = Checkbutton(self.parent, text = "Select for Modulation", variable = self.ismodul, \
                  onvalue = 1, offvalue = 0, height=2, \
                  width = 20)
         C2.pack()
        
         # Mixing Button
         CheckVar3 = IntVar()
-        C3 = Checkbutton(self.parent, text = "Select for Mixing", variable = CheckVar3, \
+        C3 = Checkbutton(self.parent, text = "Select for Mixing", variable = self.ismix, \
                  onvalue = 1, offvalue = 0, height=2, \
                  width = 20)
         C3.pack()
@@ -73,6 +77,7 @@ class WaveOptions(Frame):
             data = file.read()
             print "I got %d bytes from this file." % len(data)
             print "and name of file is: %s" % file.name
+            self.name = file.name
             file.close()
 
 def main():
