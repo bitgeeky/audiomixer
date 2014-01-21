@@ -6,7 +6,7 @@ import tkMessageBox
 import tkFileDialog
 import os
 
-class MixWaves:
+class ModulateWaves:
 
     def __init__(self, name1=None, name2=None, name3=None):
         
@@ -31,27 +31,29 @@ class MixWaves:
             self.wave3 = WaveFunctions(name3)
             self.len3 = len(self.wave3.new_data)
 
+        if self.len1 == 0:
+            newlen1 = self.len1 + 100000000
+        if self.len2 == 0:
+            newlen2 = self.len2 + 100000000
+        if self.len3 == 0:
+            newlen1 = self.len3 + 100000000
+        
         self.maxlen = max(self.len1,self.len2,self.len3)
+        self.minlen = min(newlen1, newlen2, newlen3)
+        for i in range(self.maxlen):
+            arr.append(1)
+
+    def modulate(self):
         
         for i in range(self.maxlen):
-            self.arr.append(0)
-
-
-    def mix(self):
-        
-        for i in range(self.maxlen):
-
-            if i < self.len1:
-                self.arr[i] += self.wave1.new_data[i]
-            if i < self.len2:
-                self.arr[i] += self.wave2.new_data[i]
-            if i < self.len3:
-                self.arr[i] += self.wave3.new_data[i]
-            if self.arr[i] > 32767:
-                self.arr[i] = 32767
-            if self.arr[i] < -32767:
-                self.arr[i] = -32767
-
+            if self.len1 is not 0 and i < self.minlen:
+                arr[i] *= self.wave1.new_data[i]
+            if self.len2 is not 0 and i < self.minlen:
+                arr[i] *= self.wave2.new_data[i]
+            if self.len3 is not 0 and i < self.minlen:
+                arr[i] *= self.wave3.new_data[i]
+            if i >= self.minlen:
+                arr[i] = 0;
 
     def write(self, name):
         # fmt to be defined
