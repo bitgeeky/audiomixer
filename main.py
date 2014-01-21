@@ -17,6 +17,7 @@ class WaveOptions(Frame):
         # Object Vriables
         self.name = None
         self.ampval = DoubleVar()
+        self.tscaleval = DoubleVar()
         self.tshiftval = DoubleVar()
         self.trevval = DoubleVar()
         self.isrev = IntVar() 
@@ -50,7 +51,7 @@ class WaveOptions(Frame):
 
         # Time Scaling slider
         var = DoubleVar()
-        tscscale = Scale( self.parent, variable = self.trevval, orient=HORIZONTAL )
+        tscscale = Scale( self.parent, variable = self.tscaleval, orient=HORIZONTAL )
         tscscale.pack(anchor=CENTER)
         tsclabel = Label(self.parent,text = "Time Scaling")
         tsclabel.pack()
@@ -92,8 +93,11 @@ class WaveOptions(Frame):
     def PlayWave(self):
         # apply wave operations
         wave = WaveFunctions(self.name)
-        print self.ampval.get()
         wave.amplify(self.ampval.get())
+        wave.scale(self.tscaleval.get())
+        wave.shift(self.tshiftval.get())
+        if int(self.isrev.get()) == 1:
+            wave.reverse()
         # more operations when added
         wave.play()
 

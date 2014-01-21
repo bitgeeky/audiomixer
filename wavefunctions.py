@@ -37,9 +37,10 @@ class WaveFunctions:
                 self.new_data[i]=self.new_data[i]*qty
     
     def shift(self, factor):
+        new = []
         ftoshift = factor * self.samplerate
         ftoshift = abs(ftoshift)
-        if fact < 0:
+        if factor < 0:
             if self.channel == 1:
                 self.new_data = self.new_data[ftoshift::1]
             else:
@@ -47,20 +48,22 @@ class WaveFunctions:
         
         else:
             if self.channel == 1:
-                for i in range(ftoshift):
+                for i in range(int(ftoshift)):
                     new.append(0)
             else:
-                for i in range(2*ftoshift):
+                for i in range(2*int(ftoshift)):
                     new.append(0)
             self.new_data = new + self.new_data
 
         self.frames = len(self.new_data)/self.channel
     
     def scale(self, factor):
+        if factor == 0:
+            return
         new = []
         new1 = []
         new2 = []
-        if self.channel = 1:
+        if self.channel == 1:
             for i in range(int(len(self.new_data)/factor)):
                 new.append(self.new_data[int(factor*i)])
         else:
@@ -80,16 +83,20 @@ class WaveFunctions:
             fmt="%iB" %self.frames*self.channel
         else:
             fmt="%ih" %self.frames*self.channel
-	    final_data=struct.pack(fmt,*(self.new_data))
-	    nw=wave.open(name,'w')
-	    nw.setframerate(self.samplerate)
-	    nw.setnframes(self.frames)
-	    nw.setsampwidth(self.samplewidth)
-	    nw.setnchannels(self.channel)
-	    nw.writeframes(final_data)
-	    nw.close()
+        final_data=struct.pack(fmt,*(self.new_data))
+	nw=wave.open(name,'w')
+	nw.setframerate(self.samplerate)
+	nw.setnframes(self.frames)
+	nw.setsampwidth(self.samplewidth)
+	nw.setnchannels(self.channel)
+	nw.writeframes(final_data)
+	nw.close()
+
+    def reverse(self):
+        self.new_data.reverse()
     
     def play(self):
-        a = AudioFile(self.path)
+        self.write("out.wav")
+        a = AudioFile("out.wav")
         a.play()
         a.close()
