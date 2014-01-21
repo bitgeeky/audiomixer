@@ -4,6 +4,7 @@ import tkMessageBox
 import tkFileDialog
 import os
 
+from wavefunctions import WaveFunctions
 class WaveOptions(Frame):
     
     
@@ -71,6 +72,10 @@ class WaveOptions(Frame):
                  width = 20)
         C3.pack()
         
+        # Play Button
+        playbutton = Button(self.parent, text="Play", command = self.PlayWave)
+        playbutton.pack(anchor=CENTER)
+        
     def ShowBrowser(self):
         file = tkFileDialog.askopenfile(parent=self.parent,mode='rb',title='Choose a file')
         if file != None:
@@ -79,6 +84,14 @@ class WaveOptions(Frame):
             print "and name of file is: %s" % file.name
             self.name = file.name
             file.close()
+    
+    def PlayWave(self):
+        # apply wave operations
+        wave = WaveFunctions(self.name)
+        print self.ampval.get()
+        wave.amplify(self.ampval.get())
+        # more operations when added
+        wave.play()
 
 def main():
   
@@ -98,6 +111,13 @@ def main():
     frame_c.grid(sticky=W, row = 0, column = 2)
     app3 = WaveOptions(frame_c)
     
+    frame_d = LabelFrame(root, text='Modulate and Play', padx=5, pady=5)
+    frame_d.grid(sticky=W, row = 1, column = 1)
+    # app3 = WaveOptions(frame_c) make an object here
+    
+    frame_e = LabelFrame(root, text='Mix and Play', padx=5, pady=5)
+    frame_e.grid(sticky=W, row = 1, column = 2)
+    # app3 = WaveOptions(frame_c)  make an object here
     root.mainloop()  
 
 if __name__ == '__main__':

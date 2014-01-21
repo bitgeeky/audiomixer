@@ -16,21 +16,23 @@ class WaveFunctions:
 	w.close()
 	
 	self.samples=self.frames*self.channel
-	if self.samplewidth==1:
+	
+        if self.samplewidth==1:
             fmt="%iB" %self.samples
         elif self.samplewidth==2:
             fmt="%ih" %self.samples
-            self.new_data=list(struct.unpack(fmt,self.raw_data))
+        
+        self.new_data=list(struct.unpack(fmt,self.raw_data))
 
     
     def amplify(self, factor):
         
         qty = factor
         for i in xrange(len(self.new_data)):
-            if self.new_data[i]*qty>32767:
-                self.new_data[i]=32767
+            if self.new_data[i]*qty > 32767:
+                self.new_data[i] = 32767
             elif qty*self.new_data[i] < -32768:
-                self.new_data[i]=-32768
+                self.new_data[i] = -32768
             else:
                 self.new_data[i]=self.new_data[i]*qty
     """
