@@ -4,7 +4,11 @@ import tkMessageBox
 import tkFileDialog
 import os
 
+from mixwaves import MixWaves
 from wavefunctions import WaveFunctions
+from mixbutton import MixButton
+from modulatebutton import ModulateButton
+
 class WaveOptions(Frame):
     
     
@@ -96,7 +100,7 @@ class WaveOptions(Frame):
 def main():
   
     root = Tk()                      # the main frame for application    
-    root.geometry("600x400+300+300") # Specifications for the main frame
+    root.geometry("600x410+300+300") # Specifications for the main frame
     
     # Wave Objects   
     frame_a = LabelFrame(root, text='Wave 1', padx=5, pady=5)
@@ -112,12 +116,12 @@ def main():
     app3 = WaveOptions(frame_c)
     
     frame_d = LabelFrame(root, text='Modulate and Play', padx=5, pady=5)
-    frame_d.grid(sticky=W, row = 1, column = 1)
-    # app3 = WaveOptions(frame_c) make an object here
+    frame_d.grid(sticky=E+W, row = 1, column = 0)
+    obj1 = ModulateButton(frame_d)
     
     frame_e = LabelFrame(root, text='Mix and Play', padx=5, pady=5)
-    frame_e.grid(sticky=W, row = 1, column = 2)
-    # app3 = WaveOptions(frame_c)  make an object here
+    frame_e.grid(sticky=E+W, row = 1, column = 2)
+    obj = MixButton(frame_e)
     root.mainloop()  
 
 if __name__ == '__main__':

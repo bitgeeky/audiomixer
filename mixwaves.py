@@ -1,11 +1,16 @@
 import wave, struct
 from wavefunctions import WaveFunctions
+from Tkinter import *
+from ttk import Frame, Button, Style
+import tkMessageBox
+import tkFileDialog
+import os
 
 class MixWaves:
 
-    def __init__(self, name1=None, name2=None, name3=None):
-
-        if name1 is None:
+    def __init__(self, parent, name1=None, name2=None, name3=None):
+        
+	if name1 is None:
             self.wave1 = None
             self.len1 = 0
         else:
