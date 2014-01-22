@@ -31,37 +31,61 @@ class ModulateWaves:
             self.wave3 = WaveFunctions(name3)
             self.len3 = len(self.wave3.new_data)
 
+        newlen1 = self.len1
+        newlen2 = self.len2
+        newlen3 = self.len3
+        
         if self.len1 == 0:
             newlen1 = self.len1 + 100000000
         if self.len2 == 0:
             newlen2 = self.len2 + 100000000
         if self.len3 == 0:
-            newlen1 = self.len3 + 100000000
+            newlen3 = self.len3 + 100000000
         
         self.maxlen = max(self.len1,self.len2,self.len3)
         self.minlen = min(newlen1, newlen2, newlen3)
+        
+        if self.maxlen == self.len1:
+            self.name = self.wave1
+        elif self.maxlen == self.len2:
+            self.name = self.wave2
+        else:
+            self.name = self.wave3
+        
+        self.arr = []
         for i in range(self.maxlen):
-            arr.append(1)
+            self.arr.append(1)
 
     def modulate(self):
         
         for i in range(self.maxlen):
             if self.len1 is not 0 and i < self.minlen:
-                arr[i] *= self.wave1.new_data[i]
+                self.arr[i] *= self.wave1.new_data[i]
             if self.len2 is not 0 and i < self.minlen:
-                arr[i] *= self.wave2.new_data[i]
+                self.arr[i] *= self.wave2.new_data[i]
             if self.len3 is not 0 and i < self.minlen:
-                arr[i] *= self.wave3.new_data[i]
-            if i >= self.minlen:
-                arr[i] = 0;
+                self.arr[i] *= self.wave3.new_data[i]
+            if self.arr[i] > 32767:
+                self.arr[i] = 32767
+            if self.arr[i] < -32767:
+                self.arr[i] = -32767
 
-    def write(self, name):
-        # fmt to be defined
-        final_data=struct.pack(fmt,*(self.arr))
-	nw=wave.open(name,'w')
-	nw.setframerate(self.samplerate)
-	nw.setnframes(self.frames)
-	nw.setsampwidth(self.samplewidth)
-	nw.setnchannels(self.channel)
+            if i >= self.minlen:
+                self.arr[i] = 0;
+
+    def write(self, wname):
+        final_data=struct.pack(self.name.fmt,*(self.arr))
+	nw=wave.open(wname,'w')
+	nw.setframerate(self.name.samplerate)
+	nw.setnframes(self.name.frames)
+	nw.setsampwidth(self.name.samplewidth)
+	nw.setnchannels(self.name.channel)
 	nw.writeframes(final_data)
 	nw.close()
+
+    def play(self):
+        self.write("out.wav")
+        a = AudioFile("out.wav")
+        a.play()
+        a.close()
+

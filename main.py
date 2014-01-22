@@ -152,7 +152,7 @@ def mixplay():
 
 def modplay():
     wav = ModulateWaves(names[0],names[1],names[2])
-    wav.mix()
+    wav.modulate()
     wav.write("out.wav")
     new = WaveFunctions("out.wav")
     new.play()
