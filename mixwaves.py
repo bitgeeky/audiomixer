@@ -6,6 +6,7 @@ import tkMessageBox
 import tkFileDialog
 import os
 
+from audiofile import AudioFile
 class MixWaves:
 
     def __init__(self, name1=None, name2=None, name3=None):
@@ -33,6 +34,7 @@ class MixWaves:
 
         self.maxlen = max(self.len1,self.len2,self.len3)
         
+        self.arr = []
         for i in range(self.maxlen):
             self.arr.append(0)
 
@@ -63,3 +65,9 @@ class MixWaves:
 	nw.setnchannels(self.channel)
 	nw.writeframes(final_data)
 	nw.close()
+
+    def play(self):
+        self.write("out.wav")
+        a = AudioFile("out.wav")
+        a.play()
+        a.close()

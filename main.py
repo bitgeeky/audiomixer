@@ -6,9 +6,14 @@ import os
 
 from mixwaves import MixWaves
 from wavefunctions import WaveFunctions
-from mixbutton import MixButton
-from modulatebutton import ModulateButton
+from mixwaves import MixWaves
+from modulatewaves import ModulateWaves
 
+names = []
+names.append(None)
+names.append(None)
+names.append(None)
+nctr = 0;
 class WaveOptions(Frame):
     
     
@@ -88,6 +93,9 @@ class WaveOptions(Frame):
             print "I got %d bytes from this file." % len(data)
             print "and name of file is: %s" % file.name
             self.name = file.name
+            global nctr
+            names[nctr] = file.name
+            nctr += 1
             file.close()
     
     def PlayWave(self):
@@ -119,14 +127,31 @@ def main():
     frame_c.grid(sticky=W, row = 0, column = 2)
     app3 = WaveOptions(frame_c)
     
+
     frame_d = LabelFrame(root, text='Modulate and Play', padx=5, pady=5)
     frame_d.grid(sticky=E+W, row = 1, column = 0)
-    obj1 = ModulateButton(frame_d)
+    Frame(frame_d)
+    modbutton = Button(frame_d, text="Modulate Play",command = modplay)
+    modbutton.pack(anchor=CENTER)
     
+
     frame_e = LabelFrame(root, text='Mix and Play', padx=5, pady=5)
     frame_e.grid(sticky=E+W, row = 1, column = 2)
-    obj = MixButton(frame_e)
+    Frame(frame_e)
+    mixbutton = Button(frame_e, text="Mix Play",command = mixplay)
+    mixbutton.pack(anchor=CENTER)
+
     root.mainloop()  
+
+def mixplay():
+    wav = MixWaves(names[0],names[1],names[2])
+    wav.mix()
+    wav.play()
+
+def modplay():
+    wav = ModulateWaves(names[0],names[1],names[2])
+    wav.mix()
+    wav.play()
 
 if __name__ == '__main__':
     main()  
