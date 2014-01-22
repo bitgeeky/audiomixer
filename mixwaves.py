@@ -33,7 +33,13 @@ class MixWaves:
             self.len3 = len(self.wave3.new_data)
 
         self.maxlen = max(self.len1,self.len2,self.len3)
-        
+        if self.maxlen == self.len1:
+            self.name = self.wave1
+        elif self.maxlen == self.len2:
+            self.name = self.wave2
+        else:
+            self.name = self.wave3
+
         self.arr = []
         for i in range(self.maxlen):
             self.arr.append(0)
@@ -55,14 +61,13 @@ class MixWaves:
                 self.arr[i] = -32767
 
 
-    def write(self, name):
-        # fmt to be defined
-        final_data=struct.pack(fmt,*(self.arr))
-	nw=wave.open(name,'w')
-	nw.setframerate(self.samplerate)
-	nw.setnframes(self.frames)
-	nw.setsampwidth(self.samplewidth)
-	nw.setnchannels(self.channel)
+    def write(self, wname):
+        final_data=struct.pack(self.name.fmt,*(self.arr))
+	nw=wave.open(wname,'w')
+	nw.setframerate(self.name.samplerate)
+	nw.setnframes(self.name.frames)
+	nw.setsampwidth(self.name.samplewidth)
+	nw.setnchannels(self.name.channel)
 	nw.writeframes(final_data)
 	nw.close()
 

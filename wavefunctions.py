@@ -21,6 +21,7 @@ class WaveFunctions:
             fmt="%iB" %self.samples
         elif self.samplewidth==2:
             fmt="%ih" %self.samples
+        self.fmt = fmt
         
         self.new_data=list(struct.unpack(fmt,self.raw_data))
 

@@ -1,4 +1,4 @@
-audiomixer
+Audiomixer
 ==========
 
 Manipulation of  *.wav files in Python , and performing operations on them
@@ -8,7 +8,7 @@ Amplification
 Modulation
 Mixing
 Time Scaling
-Time Scaling
+Time Shifting
 Time Reversal
 
 #GUI

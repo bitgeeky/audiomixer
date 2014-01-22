@@ -146,12 +146,16 @@ def main():
 def mixplay():
     wav = MixWaves(names[0],names[1],names[2])
     wav.mix()
-    wav.play()
+    wav.write("out.wav")
+    new = WaveFunctions("out.wav")
+    new.play()
 
 def modplay():
     wav = ModulateWaves(names[0],names[1],names[2])
     wav.mix()
-    wav.play()
+    wav.write("out.wav")
+    new = WaveFunctions("out.wav")
+    new.play()
 
 if __name__ == '__main__':
     main()  
