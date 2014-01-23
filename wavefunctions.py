@@ -1,5 +1,4 @@
 import wave, struct
-
 from audiofile import AudioFile
 
 class WaveFunctions:
@@ -97,7 +96,7 @@ class WaveFunctions:
         self.new_data.reverse()
     
     def play(self):
-        self.write("out.wav")
-        a = AudioFile("out.wav")
-        a.play()
-        a.close()
+            self.write("out.wav")
+            a = AudioFile("out.wav")
+            a.play()
+            a.close()

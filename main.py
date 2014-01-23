@@ -2,7 +2,7 @@ from Tkinter import *
 from ttk import Frame, Button, Style
 import tkMessageBox
 import tkFileDialog
-import os
+import os, sys
 
 from mixwaves import MixWaves
 from wavefunctions import WaveFunctions
@@ -107,7 +107,11 @@ class WaveOptions(Frame):
         if int(self.isrev.get()) == 1:
             wave.reverse()
         # more operations when added
-        wave.play()
+        child_pid = os.fork()
+        if child_pid == 0:
+            wave.play()
+            sys.exit(0)
+        #pid, status = os.waitpid(child_pid, 0)
 
 def main():
   
@@ -148,14 +152,20 @@ def mixplay():
     wav.mix()
     wav.write("out.wav")
     new = WaveFunctions("out.wav")
-    new.play()
+    child_pid = os.fork()
+    if child_pid == 0:
+        new.play()
+        sys.exit(0)
 
 def modplay():
     wav = ModulateWaves(names[0],names[1],names[2])
     wav.modulate()
     wav.write("out.wav")
     new = WaveFunctions("out.wav")
-    new.play()
+    child_pid = os.fork()
+    if child_pid == 0:
+        new.play()
+        sys.exit(0)
 
 if __name__ == '__main__':
     main()  
