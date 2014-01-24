@@ -14,7 +14,7 @@ names = []
 names.append(None)
 names.append(None)
 names.append(None)
-nctr = 0;
+nctr = 0
 class WaveOptions(Frame):
     
     
@@ -43,21 +43,21 @@ class WaveOptions(Frame):
     
         # Amp slider
         var = DoubleVar()
-        ascale = Scale( self.parent, variable = self.ampval, orient=HORIZONTAL )
+        ascale = Scale( self.parent, variable = self.ampval, orient=HORIZONTAL ,from_ = 0,to = 5)
         ascale.pack(anchor=CENTER)
         alabel = Label(self.parent,text = "Amplitude")
         alabel.pack()
 
         # Time Shift slider
         var = DoubleVar()
-        tshscale = Scale( self.parent, variable = self.tshiftval, orient=HORIZONTAL )
+        tshscale = Scale( self.parent, variable = self.tshiftval, orient=HORIZONTAL,from_ = -1, to = 1, resolution = 0.5 )
         tshscale.pack(anchor=CENTER)
         tshlabel = Label(self.parent,text = "Time Shift")
         tshlabel.pack()
 
         # Time Scaling slider
         var = DoubleVar()
-        tscscale = Scale( self.parent, variable = self.tscaleval, orient=HORIZONTAL )
+        tscscale = Scale( self.parent, variable = self.tscaleval, orient=HORIZONTAL,from_ = 0, to = 8, resolution = 0.5 )
         tscscale.pack(anchor=CENTER)
         tsclabel = Label(self.parent,text = "Time Scaling")
         tsclabel.pack()

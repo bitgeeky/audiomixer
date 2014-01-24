@@ -39,7 +39,7 @@ class WaveFunctions:
     def shift(self, factor):
         new = []
         ftoshift = factor * self.samplerate
-        ftoshift = abs(ftoshift)
+        ftoshift = int(abs(ftoshift))
         if factor < 0:
             if self.channel == 1:
                 self.new_data = self.new_data[ftoshift::1]
