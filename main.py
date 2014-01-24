@@ -2,7 +2,7 @@ from Tkinter import *
 from ttk import Frame, Button, Style
 import tkMessageBox
 import tkFileDialog
-import os, sys
+import signal, os, sys
 
 from mixwaves import MixWaves
 from wavefunctions import WaveFunctions
@@ -28,7 +28,10 @@ class WaveOptions(Frame):
         self.trevval = DoubleVar()
         self.isrev = IntVar() 
         self.ismodul = IntVar() 
-        self.ismix = IntVar() 
+        self.ismix = IntVar()
+        self.isplaying = 0
+        self.ispaused = 0
+        self.pid = None
         
         # Initialize Frame
         Frame.__init__(self, parent)   
@@ -87,6 +90,10 @@ class WaveOptions(Frame):
         playbutton = Button(self.parent, text="Play", command = self.PlayWave)
         playbutton.pack(anchor=CENTER)
         
+        # Pause Button
+        pausebutton = Button(self.parent, text="Pause", command = self.PauseWave)
+        pausebutton.pack(anchor=CENTER)
+        
     def ShowBrowser(self):
         file = tkFileDialog.askopenfile(parent=self.parent,mode='rb',title='Choose a file')
         if file != None:
@@ -101,6 +108,11 @@ class WaveOptions(Frame):
     
     def PlayWave(self):
         # apply wave operations
+        self.isplaying = 1
+        if self.ispaused == 1:
+            os.kill(self.pid, signal.SIGCONT)
+            self.ispaused = 0
+            return
         wave = WaveFunctions(self.name)
         wave.amplify(self.ampval.get())
         wave.scale(self.tscaleval.get())
@@ -109,15 +121,24 @@ class WaveOptions(Frame):
             wave.reverse()
         # more operations when added
         child_pid = os.fork()
+        self.pid = child_pid
         if child_pid == 0:
+            self.isplaying = 1
             wave.play()
             sys.exit(0)
         #pid, status = os.waitpid(child_pid, 0)
+    
+    def PauseWave(self):
+        if self.isplaying == 1:
+            os.kill(self.pid, signal.SIGSTOP)
+            self.ispaused = 1
+            self.isplaying = 0
+
 
 def main():
   
     root = Tk()                      # the main frame for application    
-    root.geometry("600x410+300+300") # Specifications for the main frame
+    root.geometry("600x430+300+300") # Specifications for the main frame
     
     # Wave Objects   
     frame_a = LabelFrame(root, text='Wave 1', padx=5, pady=5)
