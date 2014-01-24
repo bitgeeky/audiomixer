@@ -8,7 +8,8 @@ from mixwaves import MixWaves
 from wavefunctions import WaveFunctions
 from mixwaves import MixWaves
 from modulatewaves import ModulateWaves
-
+from recordwave import RecordWave
+from audiofile import AudioFile
 names = []
 names.append(None)
 names.append(None)
@@ -145,6 +146,11 @@ def main():
     mixbutton = Button(frame_e, text="Mix Play",command = mixplay)
     mixbutton.pack(anchor=CENTER)
 
+    frame_f = LabelFrame(root, text='Record and Play', padx=5, pady=5)
+    frame_f.grid(sticky=E+W, row = 1, column = 1)
+    Frame(frame_f)
+    recordbutton = Button(frame_f, text="Record Play",command = recordplay)
+    recordbutton.pack(anchor=CENTER)
     root.mainloop()  
 
 def mixplay():
@@ -166,6 +172,12 @@ def modplay():
     if child_pid == 0:
         new.play()
         sys.exit(0)
+
+def recordplay():
+    recorder = RecordWave()
+    recorder.record_to_file('demo.wav')
+    a = AudioFile("demo.wav")
+    a.play()
 
 if __name__ == '__main__':
     main()  
